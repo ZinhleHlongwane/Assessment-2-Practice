@@ -23,7 +23,7 @@ The goal is to help students prepare by practicing **problem-solving**, **logic*
 1. **Fork** this repository (do not clone it directly)
 2. Clone **your fork** to your local machine
 3. Open the project in **VS Code**
-4. Work inside `practice.py`
+4. Work inside `main.py`
 5. Implement **one function at a time**
 6. Test your solution before moving on
 
