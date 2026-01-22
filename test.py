@@ -9,96 +9,152 @@ Instructions:
 - Run this file to check your work.
 """
 
-import practice
+import unittest
+from io import StringIO
+import sys
 
-print("Running tests...\n")
-
-# ================================
-# CONDITIONAL STATEMENTS
-# ================================
-
-assert practice.check_even_or_odd(10) == "Even"
-assert practice.check_even_or_odd(7) == "Odd"
-
-assert practice.grade_classifier(85) == "Distinction"
-assert practice.grade_classifier(65) == "Pass"
-assert practice.grade_classifier(40) == "Fail"
-
-print("✔ Conditional statements passed")
-
-
-# ================================
-# FUNCTIONS + BASIC LOOPS
-# ================================
-
-print("\nCount up from 1 to 5:")
-practice.count_up(5)
-
-print("\nCount down from 5 to 1:")
-practice.count_down(5)
-
-assert practice.sum_of_numbers(10) == 55
-
-print("\nEven numbers up to 10:")
-practice.print_even_numbers(10)
-
-print("✔ Basic loops passed")
+from main import (
+    check_even_or_odd,
+    grade_classifier,
+    count_up,
+    count_down,
+    sum_of_numbers,
+    print_even_numbers,
+    fizz_loop,
+    input_until_stop,
+    running_total,
+    break_and_continue_logic,
+    draw_star_square,
+    right_aligned_triangle,
+    number_pattern,
+    count_vowels,
+    is_prime,
+    factorial,
+    password_attempt
+)
 
 
-# ================================
-# ADVANCED LOOPS
-# ================================
+class TestConditionals(unittest.TestCase):
 
-print("\nFizz loop up to 15:")
-practice.fizz_loop(15)
+    def test_even_or_odd(self):
+        self.assertEqual(check_even_or_odd(4), "Even")
+        self.assertEqual(check_even_or_odd(7), "Odd")
 
-print("\nInput until stop (-1 to stop):")
-count = practice.input_until_stop()
-assert count >= 0
-
-print("\nRunning total (0 to stop):")
-practice.running_total()
-
-print("\nBreak and continue logic:")
-practice.break_and_continue_logic()
-
-print("✔ Advanced loops passed")
+    def test_grade_classifier(self):
+        self.assertEqual(grade_classifier(80), "Distinction")
+        self.assertEqual(grade_classifier(65), "Pass")
+        self.assertEqual(grade_classifier(40), "Fail")
 
 
-# ================================
-# PATTERNS / NESTED LOOPS
-# ================================
+class TestBasicLoops(unittest.TestCase):
 
-square = practice.draw_star_square(3)
-assert isinstance(square, str)
-assert square.count("*") > 0
+    def capture_output(self, func, *args):
+        captured = StringIO()
+        sys.stdout = captured
+        func(*args)
+        sys.stdout = sys.__stdout__
+        return captured.getvalue()
 
-triangle = practice.right_aligned_triangle(4)
-assert isinstance(triangle, str)
+    def test_count_up(self):
+        output = self.capture_output(count_up, 3)
+        self.assertEqual(output, "1\n2\n3\n")
 
-numbers = practice.number_pattern(4)
-assert isinstance(numbers, str)
+    def test_count_down(self):
+        output = self.capture_output(count_down, 3)
+        self.assertEqual(output, "3\n2\n1\n")
 
-print("✔ Patterns passed")
+    def test_sum_of_numbers(self):
+        self.assertEqual(sum_of_numbers(10), 55)
 
-
-# ================================
-# SIMPLE ALGORITHMS
-# ================================
-
-assert practice.count_vowels("assessment") == 4
-assert practice.is_prime(11) is True
-assert practice.is_prime(12) is False
-assert practice.factorial(5) == 120
-
-print("✔ Simple algorithms passed")
+    def test_print_even_numbers(self):
+        output = self.capture_output(print_even_numbers, 6)
+        self.assertEqual(output, "2\n4\n6\n")
 
 
-# ================================
-# CONDITIONAL + LOOPS
-# ================================
+class TestAdvancedLoops(unittest.TestCase):
 
-print("\nPassword attempt test:")
-practice.password_attempt()
+    def capture_output(self, func, *args):
+        captured = StringIO()
+        sys.stdout = captured
+        func(*args)
+        sys.stdout = sys.__stdout__
+        return captured.getvalue()
 
-print("\n🎉 All tests completed successfully!")
+    def test_fizz_loop(self):
+        output = self.capture_output(fizz_loop, 5)
+        expected = "1\n2\nFizz\n4\n5\n"
+        self.assertEqual(output, expected)
+
+    def test_input_until_stop(self):
+        sys.stdin = StringIO("5\n3\n2\n-1\n")
+        result = input_until_stop()
+        sys.stdin = sys.__stdin__
+        self.assertEqual(result, 3)
+
+    def test_running_total(self):
+        sys.stdin = StringIO("2\n3\n5\n0\n")
+        output = self.capture_output(running_total)
+        self.assertIn("10", output)
+
+    def test_break_and_continue_logic(self):
+        sys.stdin = StringIO("-5\n20\n150\n")
+        output = self.capture_output(break_and_continue_logic)
+        self.assertIn("20", output)
+
+
+class TestPatterns(unittest.TestCase):
+
+    def test_star_square(self):
+        result = draw_star_square(3)
+        expected = "***\n***\n***\n"
+        self.assertEqual(result, expected)
+
+    def test_right_aligned_triangle(self):
+        result = right_aligned_triangle(3)
+        expected = "  #\n ##\n###\n"
+        self.assertEqual(result, expected)
+
+    def test_number_pattern(self):
+        result = number_pattern(4)
+        expected = "1\n12\n123\n1234\n"
+        self.assertEqual(result, expected)
+
+
+class TestAlgorithms(unittest.TestCase):
+
+    def test_count_vowels(self):
+        self.assertEqual(count_vowels("assessment"), 4)
+        self.assertEqual(count_vowels("sky"), 0)
+
+    def test_is_prime(self):
+        self.assertTrue(is_prime(7))
+        self.assertFalse(is_prime(9))
+        self.assertFalse(is_prime(1))
+
+    def test_factorial(self):
+        self.assertEqual(factorial(0), 1)
+        self.assertEqual(factorial(5), 120)
+
+
+class TestPasswordAttempt(unittest.TestCase):
+
+    def capture_output(self, func):
+        captured = StringIO()
+        sys.stdout = captured
+        func()
+        sys.stdout = sys.__stdout__
+        return captured.getvalue()
+
+    def test_password_success(self):
+        sys.stdin = StringIO("secret\n")
+        output = self.capture_output(password_attempt)
+        self.assertIn("Access granted", output)
+
+    def test_password_failure(self):
+        sys.stdin = StringIO("a\nb\nc\n")
+        output = self.capture_output(password_attempt)
+        self.assertIn("Access denied", output)
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
