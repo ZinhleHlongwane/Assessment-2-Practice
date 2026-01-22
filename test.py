@@ -1,11 +1,11 @@
 """
 Assessment 2 Practice – Test File
 
-This file tests the functions implemented in practice.py.
+This file tests the functions implemented in main.py.
 
 Instructions:
 - Do NOT modify this file.
-- Implement the functions in practice.py.
+- Implement the functions in main.py.
 - Run this file to check your work.
 """
 
