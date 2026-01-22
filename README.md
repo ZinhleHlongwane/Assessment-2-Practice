@@ -2,7 +2,7 @@
 
 This repository contains **practice problems for Assessment 2**, focusing on core Python fundamentals.
 
-The goal is to help students prepare by practicing **problem-solving**, **logic**, and **syntax** — not by memorising solutions.
+The goal is to help students prepare by practicing **problem-solving**, **logic**, and **syntax**, not by memorising solutions.
 
 ---
 
